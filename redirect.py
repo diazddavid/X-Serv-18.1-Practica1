@@ -5,6 +5,17 @@ class redirect(webapp.app):
     """
     Use parse of webapp.app
     """
+    
+    def initDic(self):
+         try:
+            open('invUrlDic.csv').close
+        except FileNotFoundError:
+            with open('invUrlDic.csv', 'w') as csvfile:
+                writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+                fieldnames = ['shortUrl', 'url']
+                writer.writeheaders()
+                write.writerow({'url' : '', 'shortUrl': ''})
+        return
 
     def tryOpen(self, filename):
         try:
@@ -27,6 +38,8 @@ class redirect(webapp.app):
 
         Returns the HTTP code for the reply, and an HTML page.
         """
+        
+        self.initDic()    #Por si acaso nada mas iniciar el servidor nos piden una redireccion
         if method == 'GET':
             if self.getValue(rest) == "Null":
                 return("404 NOT FOUND", "YOUR SHORT URL: /" + rest + " IS WRONG")
